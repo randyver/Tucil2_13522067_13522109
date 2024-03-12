@@ -20,9 +20,19 @@ pen_size = 2 if iteration > 5 else 5
 
 t = turtle.Turtle()
 
+print("Perhitungan dengan divide and conquer menggunakan warna merah")
+
 for point in points:
     t.penup()
     t.goto(*point)
-    t.dot(pen_size)
+    t.dot(pen_size, "red")
+
+print("Perhitungan dengan bruteforce menggunakan warna biru")
+
+points = bezier_curve.bruteforce_quadratic(control_points)
+for point in points:
+    t.penup()
+    t.goto(*point)
+    t.dot(pen_size, "black")
 
 turtle.done()
