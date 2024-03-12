@@ -1,6 +1,7 @@
 import turtle
 import bezier_curve
 
+
 order = int(input("Masukkan order kurva n (1 untuk linier, 2 untuk quadratic, dst) "))
 
 control_points: list[tuple[float, float]] = []
@@ -15,14 +16,13 @@ iteration = int(input("Masukkan jumlah iterasi "))
 
 points = bezier_curve.general(order, control_points, iteration)
 
-def draw_point(x, y):
-    t.penup()
-    t.goto(x, y)
-    t.dot(5)
+pen_size = 2 if iteration > 5 else 5 
 
 t = turtle.Turtle()
 
 for point in points:
-    draw_point(*point)
+    t.penup()
+    t.goto(*point)
+    t.dot(pen_size)
 
 turtle.done()
