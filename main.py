@@ -1,6 +1,4 @@
 import bezier_visualize
-from draw_utils import draw_lines, draw_points
-from line import Line
 
 order = int(input("Masukkan order kurva n (1 untuk linier, 2 untuk quadratic, dst): "))
 
