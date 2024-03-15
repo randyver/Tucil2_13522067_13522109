@@ -1,4 +1,5 @@
 from line import Line
+from math import comb
 import copy
 
 def approximate_from_lines(control_lines: list[Line], iteration: int, weight: float) -> list[tuple[float, float]]:
@@ -44,5 +45,25 @@ def bruteforce_quadratic(control_points: list[tuple[float, float]]) -> list[tupl
 def bruteforce_general(order: int, control_points: list[tuple[float, float]]) -> list[tuple[float, float]]:
     if order == 2:
         return bruteforce_quadratic(control_points)
-    print("Order selain 2 belum diimplementasi")
-    return [(0.0, 0.0)]
+    else:
+        result: list[tuple[float, float]] = []
+        density = 300
+        n = len(control_points)
+        
+        # precompute the binomial coefficients
+        binomials = [[comb(n, i) for i in range(n+1)] for n in range(len(control_points))]
+        
+        def bernstein_poly(i, n, t):
+            return binomials[n][i] * ((1 - t) ** (n - i)) * (t ** i)
+        
+        for d in range(density + 1):
+            t = d / density
+            x, y = 0, 0
+            for i, (px, py) in enumerate(control_points):
+                b = bernstein_poly(i, n - 1, t)
+                x += px * b
+                y += py * b
+            result.append((x, y))
+
+        return result
+
