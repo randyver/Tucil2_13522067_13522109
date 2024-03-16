@@ -15,7 +15,7 @@ def visualize(order: int, control_points: list[tuple[float, float]], iteration: 
     for point in control_points:
         plt.scatter(point[0], point[1], s=100, color="orange")
 
-    result = bezier_curve.approximate(order, control_points, iteration)
+    result = bezier_curve.divide_and_conquer(order, control_points, iteration)
     for point in result:
         plt.scatter(point[0], point[1], s=30, color="red")
 
