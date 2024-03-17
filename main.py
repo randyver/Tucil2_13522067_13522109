@@ -1,28 +1,53 @@
 import bezier_visualize
 
-order = int(input("Masukkan order kurva n (1 untuk linier, 2 untuk quadratic, dst): "))
+def print_title():
+    print("---------------------------------------------------------------------------------------")
+    title = """
+██████╗░███████╗███████╗███████╗██╗██████╗░  ░█████╗░██╗░░░██╗██████╗░██╗░░░██╗███████╗
+██╔══██╗██╔════╝╚════██║██╔════╝██║██╔══██╗  ██╔══██╗██║░░░██║██╔══██╗██║░░░██║██╔════╝
+██████╦╝█████╗░░░░███╔═╝█████╗░░██║██████╔╝  ██║░░╚═╝██║░░░██║██████╔╝╚██╗░██╔╝█████╗░░
+██╔══██╗██╔══╝░░██╔══╝░░██╔══╝░░██║██╔══██╗  ██║░░██╗██║░░░██║██╔══██╗░╚████╔╝░██╔══╝░░
+██████╦╝███████╗███████╗███████╗██║██║░░██║  ╚█████╔╝╚██████╔╝██║░░██║░░╚██╔╝░░███████╗
+╚═════╝░╚══════╝╚══════╝╚══════╝╚═╝╚═╝░░╚═╝  ░╚════╝░░╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚══════╝
+"""
+    print(title)
+    print("---------------------------------------------------------------------------------------")
 
-control_points: list[tuple[float, float]] = []
-print(f"Masukkan {order + 1} titik: P_0, ..., P_{order}:")
-for i in range(order + 1):
-    point = map(float, input().split())
-    control_points.append(tuple(point))
+def run_program():
+    order = int(input("Masukkan order kurva n (1 untuk linier, 2 untuk quadratic, dst): "))
 
-print("Control points:", control_points)
+    control_points: list[tuple[float, float]] = []
+    print(f"Masukkan {order + 1} titik kontrol (P_0, ..., P_{order}):")
+    for i in range(order + 1):
+        point = map(float, input().split())
+        control_points.append(tuple(point))
 
-iteration = int(input("Masukkan jumlah iterasi: "))
+    control_points_str = ', '.join([f'({x}, {y})' for x, y in control_points])
+    print("Titik kontrol:", control_points_str)
 
-print(
-"""Pilihan pembuatan kurva Bezier
-1. Divide and Conquer
-2. Bruteforce""")
+    iteration = int(input("Masukkan jumlah iterasi: "))
 
-option = int(input())
-if option not in [1, 2]:
-    print("Opsi tidak valid")
-    exit(0)
+    while True:
+        print("""Pilihan pembuatan kurva Bezier
+        1. Divide and Conquer
+        2. Bruteforce""")
 
-if option == 1:
-    bezier_visualize.visualize(order, control_points, iteration)
-else:
-    bezier_visualize.visualize_bruteforce(order, control_points)
+        option = int(input("Masukkan pilihan: "))
+        if option in [1, 2]:
+            break
+        print("Opsi tidak valid. Harap masukkan angka 1 atau 2.")
+    
+    if option == 1:
+        bezier_visualize.visualize(order, control_points, iteration)
+    else:
+        bezier_visualize.visualize_bruteforce(order, control_points)
+
+print_title()
+while True:
+    # print_title()
+    run_program()
+    print("---------------------------------------------------------------------------------------")
+    run_again = input("Apakah Anda ingin menjalankan program lagi? (Y/N): ").strip().upper()
+    print("---------------------------------------------------------------------------------------")
+    if run_again != 'Y':
+        break
