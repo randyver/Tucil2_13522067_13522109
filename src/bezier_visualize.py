@@ -1,11 +1,5 @@
-from line import Line
-import copy
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
-from matplotlib.animation import FuncAnimation
-from itertools import cycle
 import bezier_curve
-# import bezier_animation
 
 
 def visualize(order: int, control_points: list[tuple[float, float]], iteration: int):   
@@ -24,10 +18,6 @@ def visualize(order: int, control_points: list[tuple[float, float]], iteration: 
     plt.title('Hasil titik-titik Divide and Conquer')
     plt.grid(True)
     plt.show()
-
-    # Moving animation (Belum Selesai)
-
-    # animation = FuncAnimation(fig[1], bezier_animation.update_lines)
 
 
 def visualize_bruteforce(order: int, control_points: list[tuple[float, float]]):
