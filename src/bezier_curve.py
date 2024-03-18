@@ -21,10 +21,44 @@ def divide_and_conquer_from_lines(control_lines: list[Line], iteration: int, wei
         return first_result + current_result + second_result
 
 def divide_and_conquer(order: int, control_points: list[tuple[float, float]], iteration: int) -> list[tuple[float, float]]:
+    # if order == 2:
+        # return quadratic_divide_and_conquer(control_points, iteration)
+    
     control_lines: list[Line] = []
     for i in range(len(control_points) - 1):
         control_lines.append(Line(control_points[i], control_points[i + 1]))
     return divide_and_conquer_from_lines(control_lines, iteration, 0.5)
+
+
+def quadratic_divide_and_conquer(control_points: list[tuple[float, float]], iteration) -> list[tuple[float, float]]:
+    def midpoint(first: tuple[float, float], second: tuple[float, float]):
+        return (first[0] + second[0]) / 2, (first[1] + second[1]) / 2
+
+    current_points: list[tuple[float, float]] = control_points
+
+    for _ in range(iteration):
+        midpoints: list[tuple[float, float]] = []
+        midpoints.append(current_points[0])
+
+        for i in range(1, len(current_points)):
+            midpoints.append(midpoint(current_points[i], current_points[i - 1]))
+        midpoints.append(current_points[-1])
+
+        current_points: list[tuple[float, float]] = []
+        result: list[tuple[float, float]] = []
+        current_points.append(midpoints[0])
+        current_points.append(midpoints[1])
+        result.append(midpoints[0])
+
+        for i in range(2, len(midpoints) - 1):
+            result.append(midpoint(midpoints[i], midpoints[i - 1]))
+            current_points.append(midpoint(midpoints[i], midpoints[i - 1]))
+            current_points.append(midpoints[i])
+        
+        current_points.append(midpoints[-1])
+        result.append(midpoints[-1])
+
+    return result
 
 def bruteforce_general(order: int, control_points: list[tuple[float, float]]) -> list[tuple[float, float]]:
     result: list[tuple[float, float]] = []
