@@ -65,19 +65,32 @@ def bruteforce_general(order: int, control_points: list[tuple[float, float]]) ->
     density = 300
     n = len(control_points)
     
-    # precompute the binomial coefficients
-    binomials = [[comb(n, i) for i in range(n+1)] for n in range(len(control_points))]
-    
-    def bernstein_poly(i, n, t):
-        return binomials[n][i] * ((1 - t) ** (n - i)) * (t ** i)
-    
     for d in range(density + 1):
         t = d / density
         x, y = 0, 0
+        
+        # basis
+        basis_pow = (1 - t) ** (n - 1)
+        
         for i, (px, py) in enumerate(control_points):
-            b = bernstein_poly(i, n - 1, t)
+            
+            # bernstein poly
+            if i == 0:
+                b = basis_pow
+            elif t == 1:
+                if i < (n-1):
+                    b = 0
+                else:
+                    b = 1
+            else:
+                b *= t / (1 - t) * (n - i) / i
+            
             x += px * b
             y += py * b
+            
+            if t != 1:
+                basis_pow /= (1 - t)
+            
         result.append((x, y))
 
     return result
