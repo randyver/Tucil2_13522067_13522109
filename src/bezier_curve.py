@@ -2,7 +2,7 @@ from line import Line
 from math import comb
 import copy
 
-def approximate_from_lines(control_lines: list[Line], iteration: int, weight: float) -> list[tuple[float, float]]:
+def divide_and_conquer_from_lines(control_lines: list[Line], iteration: int, weight: float) -> list[tuple[float, float]]:
     original_control_lines = copy.deepcopy(control_lines)
 
     while len(control_lines) > 1:
@@ -16,15 +16,15 @@ def approximate_from_lines(control_lines: list[Line], iteration: int, weight: fl
     if iteration == 1:
         return current_result
     else:
-        left_result: list[tuple[float, float]] = approximate_from_lines(original_control_lines, iteration - 1, weight / 2)
-        right_result: list[tuple[float, float]] = approximate_from_lines(original_control_lines, iteration - 1, 1 - weight / 2)
-        return left_result + current_result + right_result
+        first_result: list[tuple[float, float]] = divide_and_conquer_from_lines(original_control_lines, iteration - 1, weight / 2)
+        second_result: list[tuple[float, float]] = divide_and_conquer_from_lines(original_control_lines, iteration - 1, 1 - weight / 2)
+        return first_result + current_result + second_result
 
 def divide_and_conquer(order: int, control_points: list[tuple[float, float]], iteration: int) -> list[tuple[float, float]]:
     control_lines: list[Line] = []
     for i in range(len(control_points) - 1):
         control_lines.append(Line(control_points[i], control_points[i + 1]))
-    return approximate_from_lines(control_lines, iteration, 0.5)
+    return divide_and_conquer_from_lines(control_lines, iteration, 0.5)
 
 def bruteforce_general(order: int, control_points: list[tuple[float, float]]) -> list[tuple[float, float]]:
     result: list[tuple[float, float]] = []
@@ -48,17 +48,17 @@ def bruteforce_general(order: int, control_points: list[tuple[float, float]]) ->
 
     return result
 
-# def bruteforce_quadratic(control_points: list[tuple[float, float]]) -> list[tuple[float, float]]:
-#     result: list[tuple[float, float]] = []
-#     density = 300
-#     t = 0
-#     for _ in range(density + 1):
-#         # B(t) = (1-t)^2 P_0 + 2(1-t)t P_1 + t^2 P_2
-#         first = control_points[0][0] * (1 - t) ** 2, control_points[0][1] * (1 - t) ** 2
-#         second = control_points[1][0] * 2 * (1-t) * t, control_points[1][1] * 2 * (1-t) * t
-#         third = control_points[2][0] * t * t, control_points[2][1] * t * t
-#         result.append((first[0] + second[0] + third[0], first[1] + second[1] + third[1]))
-#         t += 1 / density
+def bruteforce_quadratic(control_points: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    result: list[tuple[float, float]] = []
+    density = 300
+    t = 0
+    for _ in range(density + 1):
+        # B(t) = (1-t)^2 P_0 + 2(1-t)t P_1 + t^2 P_2
+        first = control_points[0][0] * (1 - t) ** 2, control_points[0][1] * (1 - t) ** 2
+        second = control_points[1][0] * 2 * (1-t) * t, control_points[1][1] * 2 * (1-t) * t
+        third = control_points[2][0] * t * t, control_points[2][1] * t * t
+        result.append((first[0] + second[0] + third[0], first[1] + second[1] + third[1]))
+        t += 1 / density
 
-#     return result
+    return result
 
