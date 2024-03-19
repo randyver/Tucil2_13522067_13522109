@@ -18,8 +18,8 @@ The project aims to implement a Bézier Curve using the Middle Point Algorithm b
 - Python
 
 ## Features
-- Visualize Bézier curve using Divide and Conquer algorithm
-- Visualize Bézier curve using Brute Force algorithm
+- Visualize and animate Bézier curve using Divide and Conquer algorithm
+- Visualize and animate Bézier curve using Brute Force algorithm
 
 
 ## Screenshots
